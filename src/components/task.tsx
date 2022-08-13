@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, ViewStyle } from 'react-native';
 
 export interface TaskData {
   id?: string;
@@ -14,12 +14,15 @@ export interface TaskData {
 
 export interface TaskProps {
   task: TaskData;
+  classname?: string;
 }
 
 export function Task(props: TaskProps) {
-  const { task } = props;
+  const { task, classname } = props;
   return (
-    <View className="bg-indigo-900 p-4 rounded-xl w-full flex-row items-center">
+    <View
+      className={`bg-indigo-900 p-4 rounded-xl w-full flex-row items-center ${classname}`}
+    >
       <View className="rounded-full border-2 border-pink-400 h-5 w-5 mr-3" />
       <Text className="text-white font-medium">{task.title}</Text>
     </View>
