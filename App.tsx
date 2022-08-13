@@ -8,6 +8,7 @@ import {
 } from 'react-native-safe-area-context';
 import { TailwindProvider } from 'tailwindcss-react-native';
 import { Task, TaskData } from './src/components';
+import { Loading } from './src/components/loading';
 import { Tasklist } from './src/components/task-list';
 
 export default function App() {
@@ -15,7 +16,8 @@ export default function App() {
     <TailwindProvider>
       <SafeAreaProvider>
         <StatusBar style="auto" />
-        <Tasklist />
+        {/* <Tasklist /> */}
+        <Loading />
       </SafeAreaProvider>
     </TailwindProvider>
   );
