@@ -47,14 +47,15 @@ export function Tasklist() {
             key={`task-${task.id}`}
             entering={FadeInLeft}
             exiting={FadeOutRight}
-            onTouchEnd={() => {
-              tasks.splice(index, 1);
-              setTask([...tasks]);
-            }}
             layout={Layout.springify().delay(400)}
             className="mb-3"
           >
-            <Task task={task} />
+            <Task
+              task={task}
+              onChange={(task: TaskData) => {
+                setTask(tasks.map((t) => (t.id === task.id ? task : t)));
+              }}
+            />
           </Animated.View>
         ))}
       </Animated.ScrollView>
