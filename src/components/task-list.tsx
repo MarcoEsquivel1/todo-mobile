@@ -3,38 +3,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Task, TaskData } from './task';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import Animated, {
+  FadeInLeft,
+  FadeOutRight,
+  Layout,
+} from 'react-native-reanimated';
 
-const tasksMock: TaskData[] = [
-  {
-    id: '1',
-    title: 'Tarea 1',
-    description: 'Descripción de la tarea 1',
-    completed: false,
-    assignedTo: 'Juan',
-    createdAt: '2020-01-01',
-    updatedAt: '2020-01-01',
-  },
-  {
-    id: '2',
-    title: 'Tarea 2',
-    description: 'Descripción de la tarea 2',
-
-    completed: true,
-  },
-  {
-    id: '3',
-    title: 'Tarea 3',
-    description: 'Descripción de la tarea 3',
-    completed: false,
-    assignedTo: 'Juan',
-  },
-  {
-    id: '4',
-    title: 'Tarea 4',
-    description: 'Descripción de la tarea 4',
-    completed: false,
-  },
-];
+const tasksMock: TaskData[] = [];
 
 export function Tasklist() {
   const [tasks, setTask] = useState<TaskData[]>(tasksMock);
@@ -54,14 +29,35 @@ export function Tasklist() {
 
   return (
     <View className="flex-1">
-      <FlatList
+      {/* <FlatList
         className={`flex-1 bg-indigo-400 px-4`}
         style={{ paddingTop: insets.top }}
         data={tasks}
         renderItem={({ item, index }) => (
-          <Task key={`task-${item.id}-${index}`} task={item} classname="mb-3" />
+          
         )}
-      />
+      /> */}
+
+      <Animated.ScrollView
+        className={`flex-1 bg-indigo-400 px-4`}
+        style={{ paddingTop: insets.top }}
+      >
+        {tasks.map((task, index) => (
+          <Animated.View
+            key={`task-${task.id}`}
+            entering={FadeInLeft}
+            exiting={FadeOutRight}
+            onTouchEnd={() => {
+              tasks.splice(index, 1);
+              setTask([...tasks]);
+            }}
+            layout={Layout.springify().delay(400)}
+            className="mb-3"
+          >
+            <Task task={task} />
+          </Animated.View>
+        ))}
+      </Animated.ScrollView>
 
       <TouchableOpacity
         onPress={addTask}
