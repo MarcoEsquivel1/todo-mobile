@@ -11,7 +11,12 @@ import Animated, {
 
 const tasksMock: TaskData[] = [];
 
-export function Tasklist() {
+interface TaskListProps{
+  hasCategory: boolean
+}
+
+export function Tasklist(props: TaskListProps) {
+  const {hasCategory} = props;
   const [tasks, setTask] = useState<TaskData[]>(tasksMock);
   const insets = useSafeAreaInsets();
 
@@ -39,7 +44,7 @@ export function Tasklist() {
       /> */}
 
       <Animated.ScrollView
-        className={`flex-1 bg-indigo-400 px-4`}
+        className={`flex-1 bg-[#344EA1] px-4`}
         style={{ paddingTop: insets.top }}
       >
         {tasks.map((task, index) => (
@@ -63,6 +68,7 @@ export function Tasklist() {
       <TouchableOpacity
         onPress={addTask}
         className="absolute bottom-7 right-7 bg-pink-500 rounded-full p-5"
+        disabled={!hasCategory}
       >
         <MaterialCommunityIcons name="plus" size={30} color="white" />
       </TouchableOpacity>

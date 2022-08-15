@@ -2,25 +2,33 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { TextInput, Button } from 'react-native';
+import { onChange } from 'react-native-reanimated';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { TailwindProvider } from 'tailwindcss-react-native';
+import { Category } from './src/components/category';
+import { CategoryList } from './src/components/category-list';
 import { Tasklist } from './src/components/task-list';
 
 export default function App() {
   const [name, setName] = useState('');
-  const [isName, setIsName] = useState(false)
+  const [isNamed, setIsNamed] = useState(false);
+  const [hasCategory, setHasCategory] = useState(false);
   
   const onPress = () => {
-    setIsName(true);
+    setIsNamed(true);
+  }
+
+  const onChangeCategoryState = (state:boolean) =>{
+    setHasCategory(state);
   }
 
   return (
     <TailwindProvider>
-      <SafeAreaProvider className="bg-indigo-400">
+      <SafeAreaProvider className="bg-[#344EA1]">
         <StatusBar style="auto" />
         <SafeAreaView className="flex-1">
-          {!isName?
-          <View className='px-5 w-full h-full flex h-screen justify-center items-center'>
+          {//!isNamed?
+          /*<View className='px-5 w-full h-full flex h-screen justify-center items-center'>
             <TextInput
               placeholder="Nombre"
               className="bg-white p-2 my-3 border text-lg w-full"
@@ -33,11 +41,13 @@ export default function App() {
               title="Agregar Nombre"
               color="#841584"
             />
-          </View>
-          :
-            <><Text className='text-gray-200 text-3xl px-4 pt-5'>Bienvenido {name}</Text>
-            <Tasklist />
-          </>}
+          </View>*/
+          //:
+            <><Text className='text-gray-200 text-4xl font-extrabold px-4 p-5 mt-5'>Bienvenido {name}</Text>
+            <CategoryList setHasCategory={onChangeCategoryState}/>
+            <Tasklist hasCategory={hasCategory}/>
+          </>//
+          }
         </SafeAreaView>
       </SafeAreaProvider>
     </TailwindProvider>

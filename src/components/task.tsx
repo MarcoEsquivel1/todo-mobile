@@ -51,7 +51,7 @@ export function Task(props: TaskProps) {
 
   return (
     <Animated.View
-      className={`bg-indigo-900 p-4 rounded-xl w-full flex-row items-center ${classname}`}
+      className={`bg-[#031956] p-4 rounded-xl w-full flex-row items-center ${classname}`}
       onTouchEnd={() => {
         onChange({ ...task, completed: !task.completed });
       }}
