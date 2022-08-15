@@ -10,7 +10,7 @@ export interface TaskData {
   title: string;
   description: string;
   completed: boolean;
-
+  categoryId?: string;
   // TODO: Add assignedTo property to Task component
   assignedTo?: string;
   createdAt?: string;
@@ -42,6 +42,15 @@ export function Task(props: TaskProps) {
     [task.completed]
   );
 
+  const borderStyle = useAnimatedStyle(
+    () => ({
+      borderColor: withTiming(task.categoryId ? '#fff' : '#000', {
+        duration: 500,
+      }),
+    }),
+    [task.categoryId]
+  );
+
   const textStyle = useAnimatedStyle(
     () => ({
       textDecorationLine: task.completed ? 'line-through' : 'none',
@@ -58,8 +67,8 @@ export function Task(props: TaskProps) {
       style={containerStyle}
     >
       <Animated.View
-        className="rounded-full border-2 border-pink-400 h-5 w-5 mr-3"
-        style={circleStyle}
+        className="rounded-full border-2 h-5 w-5 mr-3"
+        style={[circleStyle, borderStyle]}
       />
       <Animated.Text className="text-white font-medium" style={textStyle}>
         {task.title}

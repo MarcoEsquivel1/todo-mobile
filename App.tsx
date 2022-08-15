@@ -5,9 +5,8 @@ import { TextInput, Button } from 'react-native';
 import { onChange } from 'react-native-reanimated';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { TailwindProvider } from 'tailwindcss-react-native';
-import { Category } from './src/components/category';
-import { CategoryList } from './src/components/category-list';
-import { Tasklist } from './src/components/task-list';
+import { Category, CategoryList } from './src/components/category';
+import { Tasklist } from './src/components/task';
 
 export default function App() {
   const [name, setName] = useState('');
