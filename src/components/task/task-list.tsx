@@ -44,8 +44,9 @@ export function Tasklist(props: TaskListProps) {
       /> */}
 
       <Animated.ScrollView
-        className={`flex-1 bg-[#344EA1] px-4`}
-        style={{ paddingTop: insets.top }}
+        contentContainerStyle={{paddingVertical: 20}}
+        className={`h-full bg-[#344EA1] px-5`}
+        //style={{ paddingTop: insets.top }}
       >
         {tasks.map((task, index) => (
           <Animated.View

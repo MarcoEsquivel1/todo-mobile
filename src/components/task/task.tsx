@@ -1,4 +1,5 @@
 import React from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, Text, ViewStyle, TouchableOpacity } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -59,20 +60,28 @@ export function Task(props: TaskProps) {
   );
 
   return (
-    <Animated.View
-      className={`bg-[#031956] p-4 rounded-xl w-full flex-row items-center ${classname}`}
-      onTouchEnd={() => {
-        onChange({ ...task, completed: !task.completed });
-      }}
-      style={containerStyle}
-    >
-      <Animated.View
-        className="rounded-full border-2 h-5 w-5 mr-3"
-        style={[circleStyle, borderStyle]}
-      />
-      <Animated.Text className="text-white font-medium" style={textStyle}>
-        {task.title}
-      </Animated.Text>
+    <Animated.View className='flex-row' style={containerStyle}>
+      <View
+        className={`bg-[#031956] p-4 px-5 rounded-l-xl flex-1 flex-row items-center ${classname}`}
+        onTouchEnd={() => {
+          onChange({ ...task, completed: !task.completed });
+        }}
+      >
+        <Animated.View
+          className="rounded-full border-2 h-5 w-5 mr-3"
+          style={[circleStyle, borderStyle]}
+        />
+        <Animated.Text className="text-white font-medium" style={textStyle}>
+          {task.title}
+        </Animated.Text>
+      </View>
+      <TouchableOpacity
+        //onPress={}
+        className={`bg-pink-400 rounded-r-xl px-3 items-center justify-center`}    
+        disabled={task.completed}
+      >
+          <MaterialCommunityIcons name='pencil' size={28} color="white"/>
+      </TouchableOpacity>
     </Animated.View>
   );
 }
