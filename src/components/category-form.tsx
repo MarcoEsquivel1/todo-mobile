@@ -1,17 +1,20 @@
 import { CategoryData } from "./category";
 import React, { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View, Text, TextInput, TouchableOpacity} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet} from "react-native";
 import Modal from "react-native-modal";
+import { ColorPicker, fromHsv } from 'react-native-color-picker'
 import Animated, {
     ZoomIn,
     FadeOut,
-    Layout
+    Layout,
+    color
   } from 'react-native-reanimated';
 const defaultData: CategoryData = {
     id: '',
     title: '',
-    nTasks: 0
+    nTasks: 0,
+    color: '#ff0000'
 }
 
 interface CategoryFormProps{
@@ -20,12 +23,22 @@ interface CategoryFormProps{
     onCancel:()=>void;
 }
 
+const styles = StyleSheet.create({
+    container: {
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+    },
+    colorpiker:{
+      width:250,
+      height:250,
+    }
+  });
+
 export function CategoryForm(props: CategoryFormProps) {
     const {onSubmit, showModal, onCancel}=props;
     const [category, setCategory] = useState<CategoryData>(defaultData);
     const insets = useSafeAreaInsets();
     const setDefaultData = () => setCategory(defaultData);
-
     return(
         
         <Modal
@@ -55,6 +68,20 @@ export function CategoryForm(props: CategoryFormProps) {
                         value={category.title}
                         onChangeText={(e) => setCategory({...category, title: e})}
                     />
+                    
+                    <View style={styles.container}>
+                        <Text className="text-white">Selecciona un color para la categoria!</Text>
+                        <ColorPicker
+                            hideSliders={true}
+                            onColorSelected={color => alert(`Color selected: ${color}`)}
+                            onColorChange={x=> {
+                                const hex = fromHsv(x);
+                                setCategory({...category, color: hex})
+                            }}
+                            style={styles.colorpiker}
+                        />
+                    </View>
+
                     <TouchableOpacity
                         onPress={()=>{
                             if(!category.title) return
