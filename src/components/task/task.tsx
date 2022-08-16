@@ -6,6 +6,7 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated';
 import { TaskForm } from './task-form';
+import { useTaskStore } from '../../stores/task-store';
 
 export interface TaskData {
 	id?: string;
@@ -26,7 +27,7 @@ export interface TaskProps {
 }
 
 export function Task(props: TaskProps) {
-	const [showModal, setShowModal] = useState(false);
+	//const [showModal, setShowModal] = useState(false);
 	const { task, classname, onChange } = props;
 
 	const containerStyle = useAnimatedStyle(
@@ -61,18 +62,18 @@ export function Task(props: TaskProps) {
 		[task.completed]
 	);
 
-	const displayForm = () => {
+	/* const displayForm = () => {
         setShowModal(true);
     }
     
     const hideForm = () => {
         setShowModal(false);
-    }
+    } */
 	
 
 	return (
 		<Animated.View className='flex-row' style={containerStyle}>
-			<TaskForm task={task} showModal={showModal} onSubmit={onChange} onCancel={hideForm}/>
+			{/* <TaskForm task={task} onSubmit={onChange}/> */}
 			<View
 				className={`bg-[#031956] p-4 px-5 rounded-l-xl flex-1 flex-row items-center ${classname}`}
 				onTouchEnd={() => {
@@ -88,7 +89,10 @@ export function Task(props: TaskProps) {
 				</Animated.Text>
 			</View>
 			<TouchableOpacity
-				onPress={displayForm}
+				onPress={() => {
+					useTaskStore.setState({selectedTask: task})
+					useTaskStore.setState({showTaskModal: true})				
+				}}
 				className={`bg-pink-400 rounded-r-xl px-3 items-center justify-center`}    
 				disabled={task.completed}
 			>

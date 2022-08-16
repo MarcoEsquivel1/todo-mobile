@@ -3,22 +3,33 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Task, TaskData } from "./task";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
+import { useTaskStore } from "../../stores/task-store";
+import shallow from "zustand/shallow";
 import Animated, {
 	FadeInLeft,
 	FadeOutRight,
 	Layout,
 } from "react-native-reanimated";
+import { TaskForm } from "./task-form";
 
-const tasksMock: TaskData[] = [];
+//const tasksMock: TaskData[] = [];
 
-interface TaskListProps {
-	hasCategory: boolean;
-}
+/* interface TaskListProps {
+	//hasCategory: boolean;
+} */
 
-export function Tasklist(props: TaskListProps) {
-	const { hasCategory } = props;
-	const [tasks, setTask] = useState<TaskData[]>(tasksMock);
-	const insets = useSafeAreaInsets();
+export function Tasklist(/* props: TaskListProps */) {
+	const {hasCategory, tasks, selectedTask} = useTaskStore(
+        state => ({ 
+            hasCategory: state.hasCategory,
+			tasks: state.tasks,
+			selectedTask: state.selectedTask
+        }), 
+		shallow
+	);
+	//const { hasCategory } = props;
+	//const [tasks, setTask] = useState<TaskData[]>(tasksMock);
+	//const insets = useSafeAreaInsets();
 
 	const addTask = () => {
 		const newTask = {
@@ -28,8 +39,14 @@ export function Tasklist(props: TaskListProps) {
 			completed: false,
 			assignedTo: "Juan",
 		};
-		setTask([...tasks, newTask]);
+		//setTask([...tasks, newTask]);
+		useTaskStore.setState({tasks: [...tasks, newTask]})
 	};
+
+	const upDate = (task: TaskData) => {
+		//setTask(tasks.map((t) => (t.id === task.id ? task : t)));
+		useTaskStore.setState({tasks: tasks.map((t) => (t.id === task.id ? task : t))})
+	}
 
 	return (
 	<View className="flex-1">
@@ -43,7 +60,7 @@ export function Tasklist(props: TaskListProps) {
 			)}
 			/> */
 		}
-
+		<TaskForm onSubmit={upDate}/>
 		<Animated.ScrollView
 			contentContainerStyle={{ paddingVertical: 20 }}
 			className={`h-full bg-[#344EA1] px-5`}
@@ -60,9 +77,11 @@ export function Tasklist(props: TaskListProps) {
 				>
 				<Task
 					task={task}
-					onChange={(task: TaskData) => {
-						setTask(tasks.map((t) => (t.id === task.id ? task : t)));
-					}}
+					onChange={upDate/* (task: TaskData) => {
+						//setTask(tasks.map((t) => (t.id === task.id ? task : t)));
+						useTaskStore.setState({tasks: tasks.map((t) => (t.id === task.id ? task : t))})
+						console.log(tasks[0].title)
+					} */}
 				/>
 				</Animated.View>
 			))

@@ -9,15 +9,23 @@ import Animated, {
     SlideOutDown,
     Layout
 } from 'react-native-reanimated';
+import { useTaskStore } from '../../stores/task-store';
+import shallow from 'zustand/shallow';
 
 const categoryMock: CategoryData[] = [];
 
-interface CategoryListProps{
+/* interface CategoryListProps{
     setHasCategory: (state: boolean) => void;
-}
+} */
 
-export function CategoryList(props: CategoryListProps) {
-    const {setHasCategory}=props;
+export function CategoryList(/* props: CategoryListProps */) {
+    //const {setHasCategory}=props;
+    const {hasCategory} = useTaskStore(
+        state => ({ 
+            hasCategory: state.hasCategory,
+        }), 
+		shallow
+	);
     const [categories, setCategories] = useState<CategoryData[]>(categoryMock);
     const [showModal, setShowModal] = useState(false);
     const insets = useSafeAreaInsets();
@@ -27,7 +35,10 @@ export function CategoryList(props: CategoryListProps) {
             category.id = Date.now().toString();
             setCategories([...categories, category]);
             hideForm();
-            setHasCategory(true);
+            if(!hasCategory){
+                useTaskStore.setState({hasCategory: true})
+            }
+            //setHasCategory(true);
         } catch (error) {
             
         }

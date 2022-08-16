@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import Animated, { ZoomIn, FadeOut } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TaskData } from "./task";
+import { useTaskStore } from '../../stores/task-store';
+import shallow from 'zustand/shallow';
 
 /* const defaultData: TaskData = {
     id: '',
@@ -13,20 +15,33 @@ import { TaskData } from "./task";
 } */
 
 interface TaskFormPrps{
-    showModal: boolean,
-    task: TaskData
-    onSubmit: (task: TaskData) => void,
-    onCancel: () => void
+    //task: TaskData
+    onSubmit: (task: TaskData) => void
 }
 
 export function TaskForm(props: TaskFormPrps) {
-    const { onSubmit, onCancel, showModal, task} = props;
-    const [editedTask, setEditedTask] = useState(task);
+    const {showModal, selectedTask} = useTaskStore(
+        state => ({ 
+            showModal: state.showTaskModal,
+            selectedTask: state.selectedTask
+        }), 
+		shallow
+	);
+    const { onSubmit} = props;
+    const [editedTask, setEditedTask] = useState(selectedTask);
     const insets = useSafeAreaInsets();
     
     const resetTask = () => {
-        setEditedTask(task);
+        setEditedTask(selectedTask);
     }
+
+    const onCancel = () => {
+        useTaskStore.setState({showTaskModal: false});
+    }
+
+    useEffect(()=>{
+        setEditedTask(selectedTask)
+    }, [selectedTask])
 
     return(
         <Modal
