@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 import Animated, { ZoomIn, FadeOut } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TaskData } from "./task";
 import { useTaskStore } from '../../stores/task-store';
 import shallow from 'zustand/shallow';
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import SelectList from 'react-native-dropdown-select-list'
 /* const defaultData: TaskData = {
     id: '',
     title: '',
@@ -20,15 +21,17 @@ interface TaskFormPrps{
 }
 
 export function TaskForm(props: TaskFormPrps) {
-    const {showModal, selectedTask, categories} = useTaskStore(
+    const {showModal, selectedTask, categories, searchTitleById} = useTaskStore(
         state => ({ 
             showModal: state.showTaskModal,
             selectedTask: state.selectedTask, 
-            categories: state.categories
+            categories: state.categories,
+            searchTitleById: state.searchTitleById
         }), 
 		shallow
 	);
     const { onSubmit} = props;
+    const [selected, setSelected] = useState("");
     const [editedTask, setEditedTask] = useState(selectedTask);
     const insets = useSafeAreaInsets();
     
@@ -43,6 +46,41 @@ export function TaskForm(props: TaskFormPrps) {
     useEffect(()=>{
         setEditedTask(selectedTask)
     }, [selectedTask])
+
+    let data = categories.map((cat) => {
+        return {key: cat.id, value: cat.title}
+    });
+
+    
+    let styles = StyleSheet.create({
+        box:{
+            backgroundColor: '#c7d2fe',
+            borderRadius: 24,
+            marginTop: 12,
+            marginBottom: 12,
+            paddingHorizontal: 20
+        },
+        dropdownBox:{
+            backgroundColor: '#e9d5ff',
+            borderRadius: 24,
+            marginVertical: 12
+        },
+        dropdownItem:{
+            borderTopWidth: 0.5,
+            borderBottomWidth: 0.5,
+            margin: 0,
+            alignItems: 'center'
+        },
+        text:{
+            fontSize: 18
+        },
+        dropdownText:{
+            fontSize: 18,
+            fontWeight: '500',
+            lineHdveight: '1.75rem',
+            color: '#1E3A8A'
+        }
+    });
 
     return(
         <Modal
@@ -86,6 +124,37 @@ export function TaskForm(props: TaskFormPrps) {
 						className="bg-indigo-200 p-2 px-5 my-3 border text-lg w-full rounded-3xl"
 						value={editedTask.description}
 						onChangeText={(e) => setEditedTask({ ...editedTask, description: e })}
+                    />
+
+                    <Text className="text-lg text-start mx-2 font-semibold text-pink-500">
+						Categoria actual
+					</Text>
+
+                    <TextInput
+						className="bg-indigo-200 p-2 px-5 mt-3 border text-lg w-full rounded-3xl"
+						value={!selectedTask.categoryId ? 'Sin categoria' : searchTitleById(selectedTask.categoryId)}
+						editable={false} selectTextOnFocus={false}
+					/>
+
+                    <Text className="text-lg text-start mx-2 font-semibold text-pink-500">
+						Nueva categoria
+					</Text>
+
+                    <SelectList 
+                        value={selected}
+                        placeholder='Selecciona una categoria'
+                        onSelect={() => setEditedTask({...editedTask, categoryId: selected})}
+                        setSelected={setSelected} 
+                        data={data}  
+                        arrowicon={<MaterialCommunityIcons name="chevron-down" size={20} color={'black'} />} 
+                        searchicon={<MaterialCommunityIcons name="magnify" size={20} color={'black'} />} 
+                        search={true} 
+                        inputStyles={styles.text}
+                        boxStyles={styles.box} //override default styles 
+                        dropdownItemStyles={styles.dropdownItem}   
+                        dropdownStyles={styles.dropdownBox}  
+                        dropdownTextStyles={styles.dropdownText} 
+                        maxHeight={150}
                     />
 
 					<TouchableOpacity
