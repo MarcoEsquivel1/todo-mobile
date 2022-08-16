@@ -9,6 +9,7 @@ import Animated, {
 	FadeInLeft,
 	FadeOutRight,
 	Layout,
+	ZoomIn
 } from "react-native-reanimated";
 import { TaskForm } from "./task-form";
 
@@ -60,6 +61,12 @@ export function Tasklist(/* props: TaskListProps */) {
 			)}
 			/> */
 		}
+		<Animated.Text 
+			entering={ZoomIn.delay(100)} 
+			className='mx-5 mt-5  w-min self-start px-2 font-medium text-indigo-300'
+		>
+			CATEGORIES
+		</Animated.Text>
 		<TaskForm onSubmit={upDate}/>
 		<Animated.ScrollView
 			contentContainerStyle={{ paddingVertical: 20 }}

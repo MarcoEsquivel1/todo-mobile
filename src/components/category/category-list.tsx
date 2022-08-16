@@ -22,19 +22,19 @@ export function CategoryList(/* props: CategoryListProps */) {
     //const {setHasCategory}=props;
     const {hasCategory} = useTaskStore(
         state => ({ 
-            hasCategory: state.hasCategory,
+            hasCategory: state.hasCategory
         }), 
 		shallow
 	);
     const [categories, setCategories] = useState<CategoryData[]>(categoryMock);
-    const [showModal, setShowModal] = useState(false);
+    //const [showModal, setShowModal] = useState(false);
     const insets = useSafeAreaInsets();
 
     const addCategory = (category: CategoryData) => {
         try {
             category.id = Date.now().toString();
             setCategories([...categories, category]);
-            hideForm();
+            useTaskStore.setState({showCategoryModal: false});
             if(!hasCategory){
                 useTaskStore.setState({hasCategory: true})
             }
@@ -44,18 +44,23 @@ export function CategoryList(/* props: CategoryListProps */) {
         }
     }
 
-    const displayForm = () => {
+    /* const displayForm = () => {
         setShowModal(true);
     }
     
     const hideForm = () => {
         setShowModal(false);
-    }
+    } */
 
     return(
         <View className=''> 
-            <Animated.Text entering={ZoomIn.delay(100)} className='mx-5 w-min self-start px-2 font-medium text-indigo-300'>CATEGORIES</Animated.Text>
-            <CategoryForm showModal={showModal} onSubmit={addCategory} onCancel={hideForm}/>                   
+            <Animated.Text 
+                entering={ZoomIn.delay(100)} 
+                className='mx-5 w-min self-start px-2 font-medium text-indigo-300'
+            >
+                CATEGORIES
+            </Animated.Text>
+            <CategoryForm onSubmit={addCategory}/>                   
             <Animated.ScrollView
                 contentContainerStyle={{paddingHorizontal: 20}}
                 className={` bg-[#344EA1] w-full py-3`}
@@ -80,7 +85,9 @@ export function CategoryList(/* props: CategoryListProps */) {
                     ))
                 }
                 <TouchableOpacity
-                    onPress={displayForm}
+                    onPress={() => {
+                        useTaskStore.setState({showCategoryModal: true
+                    })}}
                     className={`bg-[#031956] p-5 mx-2 rounded-3xl w-52 h-32 items-center justify-center`}    
                 >
                     <MaterialCommunityIcons name='plus' size={50} color="white"/>
