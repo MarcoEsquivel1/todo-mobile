@@ -20,10 +20,11 @@ interface TaskFormPrps{
 }
 
 export function TaskForm(props: TaskFormPrps) {
-    const {showModal, selectedTask} = useTaskStore(
+    const {showModal, selectedTask, categories} = useTaskStore(
         state => ({ 
             showModal: state.showTaskModal,
-            selectedTask: state.selectedTask
+            selectedTask: state.selectedTask, 
+            categories: state.categories
         }), 
 		shallow
 	);

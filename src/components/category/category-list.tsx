@@ -12,7 +12,7 @@ import Animated, {
 import { useTaskStore } from '../../stores/task-store';
 import shallow from 'zustand/shallow';
 
-const categoryMock: CategoryData[] = [];
+//const categoryMock: CategoryData[] = [];
 
 /* interface CategoryListProps{
     setHasCategory: (state: boolean) => void;
@@ -20,20 +20,22 @@ const categoryMock: CategoryData[] = [];
 
 export function CategoryList(/* props: CategoryListProps */) {
     //const {setHasCategory}=props;
-    const {hasCategory} = useTaskStore(
+    const {hasCategory, categories} = useTaskStore(
         state => ({ 
-            hasCategory: state.hasCategory
+            hasCategory: state.hasCategory,
+            categories: state.categories
         }), 
 		shallow
 	);
-    const [categories, setCategories] = useState<CategoryData[]>(categoryMock);
+    //const [categories, setCategories] = useState<CategoryData[]>(categoryMock);
     //const [showModal, setShowModal] = useState(false);
     const insets = useSafeAreaInsets();
 
     const addCategory = (category: CategoryData) => {
         try {
             category.id = Date.now().toString();
-            setCategories([...categories, category]);
+            //setCategories([...categories, category]);
+            useTaskStore.setState({categories: [...categories, category]});
             useTaskStore.setState({showCategoryModal: false});
             if(!hasCategory){
                 useTaskStore.setState({hasCategory: true})

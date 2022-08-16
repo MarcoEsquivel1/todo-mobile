@@ -1,4 +1,5 @@
 import create from "zustand";
+import { CategoryData } from "../components/category";
 import { TaskData } from "../components/task";
 interface Context{
     userName: string,
@@ -8,9 +9,11 @@ interface Context{
     showTaskModal: boolean,
     selectedTask: TaskData,
     showCategoryModal: boolean,
+    categories: CategoryData[]
 }
 
 const tasksMock: TaskData[] = [];
+const categoryMock: CategoryData[] = [];
 const defaultTask: TaskData = {
     id: '',
     title: '',
@@ -30,4 +33,5 @@ export const useTaskStore = create<Context>((set, get) => ({
     showTaskModal: false,
     selectedTask: defaultTask,
     showCategoryModal: false,
+    categories: categoryMock
 }));
