@@ -2,19 +2,19 @@ import {  TouchableOpacity, View, Text} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import Animated, {
-  ZoomIn,
-  SlideOutDown, SlideInLeft,
-  Layout
-} from 'react-native-reanimated';
 import { Category, CategoryData } from './category';
 import { CategoryForm } from './category-form';
+import Animated, {
+    ZoomIn,
+    SlideOutDown,
+    Layout
+} from 'react-native-reanimated';
 
 const categoryMock: CategoryData[] = [];
 
 interface CategoryListProps{
     setHasCategory: (state: boolean) => void;
-  }
+}
 
 export function CategoryList(props: CategoryListProps) {
     const {setHasCategory}=props;
@@ -26,7 +26,7 @@ export function CategoryList(props: CategoryListProps) {
         try {
             category.id = Date.now().toString();
             setCategories([...categories, category]);
-            setShowModal(false);
+            hideForm();
             setHasCategory(true);
         } catch (error) {
             
