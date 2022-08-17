@@ -44,6 +44,10 @@ export function Tasklist(/* props: TaskListProps */) {
 		useTaskStore.setState({tasks: [...tasks, newTask]})
 	};
 
+	const showAlert = () => {
+		alert('Crea primero una categoria!')
+	}
+
 	const upDate = (task: TaskData) => {
 		//setTask(tasks.map((t) => (t.id === task.id ? task : t)));
 		useTaskStore.setState({tasks: tasks.map((t) => (t.id === task.id ? task : t))})
@@ -96,9 +100,9 @@ export function Tasklist(/* props: TaskListProps */) {
 		</Animated.ScrollView>
 
 		<TouchableOpacity
-			onPress={addTask}
+			onPress={!hasCategory ? showAlert : addTask}
 			className="absolute bottom-7 right-7 bg-pink-500 rounded-full p-5"
-			disabled={!hasCategory}
+			//disabled={!hasCategory}
 		>
 			<MaterialCommunityIcons name="plus" size={30} color="white" />
 		</TouchableOpacity>
