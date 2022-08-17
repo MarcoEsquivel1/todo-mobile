@@ -65,7 +65,7 @@ export function Tasklist(/* props: TaskListProps */) {
 			entering={ZoomIn.delay(100)} 
 			className='mx-5 mt-5  w-min self-start px-2 font-medium text-indigo-300'
 		>
-			CATEGORIES
+			TASKS
 		</Animated.Text>
 		<TaskForm onSubmit={upDate}/>
 		<Animated.ScrollView

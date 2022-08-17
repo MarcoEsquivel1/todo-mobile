@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, Text, ViewStyle, TouchableOpacity } from 'react-native';
 import Animated, {
@@ -7,6 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { TaskForm } from './task-form';
 import { useTaskStore } from '../../stores/task-store';
+import shallow from 'zustand/shallow';
 
 export interface TaskData {
 	id?: string;
@@ -28,6 +29,13 @@ export interface TaskProps {
 
 export function Task(props: TaskProps) {
 	//const [showModal, setShowModal] = useState(false);
+	const [color, setColor] = useState();
+	const {searchColorById} = useTaskStore(
+        state => ({ 
+            searchColorById: state.searchColorById
+        }), 
+		shallow
+	);
 	const { task, classname, onChange } = props;
 
 	const containerStyle = useAnimatedStyle(
@@ -48,11 +56,11 @@ export function Task(props: TaskProps) {
 
 	const borderStyle = useAnimatedStyle(
 		() => ({
-			borderColor: withTiming(task.categoryId ? '#fff' : '#000', {
+			borderColor: withTiming(!color ? '#000' : color  , {
 				duration: 500,
 			}),
 		}),
-		[task.categoryId]
+		[color]
 	);
 
 	const textStyle = useAnimatedStyle(
@@ -70,6 +78,9 @@ export function Task(props: TaskProps) {
         setShowModal(false);
     } */
 	
+	useEffect(() => {
+		setColor(searchColorById(task.categoryId))
+	}, [task.categoryId]);
 
 	return (
 		<Animated.View className='flex-row' style={containerStyle}>

@@ -10,7 +10,8 @@ interface Context{
     selectedTask: TaskData,
     showCategoryModal: boolean,
     categories: CategoryData[],
-    searchTitleById: Function
+    searchTitleById: Function,
+    searchColorById: Function
 }
 
 const tasksMock: TaskData[] = [];
@@ -35,10 +36,14 @@ export const useTaskStore = create<Context>((set, get) => ({
     selectedTask: defaultTask,
     showCategoryModal: false,
     categories: categoryMock,
-    searchTitleById: (id: String) =>{
+    searchTitleById: (id: String) => {
         const list = get().categories
         let obj = list.find(c => c.id === id)
-
         return obj?.title
+    },
+    searchColorById: (id: String) => {
+        const list = get().categories
+        let obj = list.find(c => c.id === id)
+        return obj?.color
     }
 }));
