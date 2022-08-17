@@ -1,25 +1,17 @@
-import {  TouchableOpacity, View, Text} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { TouchableOpacity, View } from 'react-native';;
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React from 'react';
 import { Category, CategoryData } from './category';
 import { CategoryForm } from './category-form';
+import { useTaskStore } from '../../stores/task-store';
+import shallow from 'zustand/shallow';
 import Animated, {
     ZoomIn,
     SlideOutDown,
     Layout
 } from 'react-native-reanimated';
-import { useTaskStore } from '../../stores/task-store';
-import shallow from 'zustand/shallow';
 
-//const categoryMock: CategoryData[] = [];
-
-/* interface CategoryListProps{
-    setHasCategory: (state: boolean) => void;
-} */
-
-export function CategoryList(/* props: CategoryListProps */) {
-    //const {setHasCategory}=props;
+export function CategoryList() {
     const {hasCategory, categories} = useTaskStore(
         state => ({ 
             hasCategory: state.hasCategory,
@@ -27,32 +19,19 @@ export function CategoryList(/* props: CategoryListProps */) {
         }), 
 		shallow
 	);
-    //const [categories, setCategories] = useState<CategoryData[]>(categoryMock);
-    //const [showModal, setShowModal] = useState(false);
-    const insets = useSafeAreaInsets();
 
     const addCategory = (category: CategoryData) => {
         try {
             category.id = Date.now().toString();
-            //setCategories([...categories, category]);
             useTaskStore.setState({categories: [...categories, category]});
             useTaskStore.setState({showCategoryModal: false});
             if(!hasCategory){
                 useTaskStore.setState({hasCategory: true})
             }
-            //setHasCategory(true);
         } catch (error) {
             
         }
     }
-
-    /* const displayForm = () => {
-        setShowModal(true);
-    }
-    
-    const hideForm = () => {
-        setShowModal(false);
-    } */
 
     return(
         <View className=''> 
@@ -64,7 +43,7 @@ export function CategoryList(/* props: CategoryListProps */) {
             </Animated.Text>
             <CategoryForm onSubmit={addCategory}/>                   
             <Animated.ScrollView
-                contentContainerStyle={{paddingHorizontal: 20}}
+                contentContainerStyle={{paddingHorizontal: 12}}
                 className={` bg-[#344EA1] w-full py-3`}
                 horizontal={true}
                 layout={Layout.springify()}

@@ -1,8 +1,10 @@
 import { CategoryData } from "./category";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
 import { TriangleColorPicker, fromHsv } from "react-native-color-picker";
+import { useTaskStore } from "../../stores/task-store";
+import shallow from "zustand/shallow";
 import {
 	View,
 	Text,
@@ -10,14 +12,12 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 } from "react-native";
-import Animated, {
+/* import Animated, {
 	ZoomIn,
 	FadeOut,
 	Layout,
 	color,
-} from "react-native-reanimated";
-import { useTaskStore } from "../../stores/task-store";
-import shallow from "zustand/shallow";
+} from "react-native-reanimated"; */
 
 const defaultData: CategoryData = {
 	id: "",
@@ -42,15 +42,17 @@ let styles = StyleSheet.create({
 });
 
 export function CategoryForm(props: CategoryFormProps) {
-	const { onSubmit } = props;
 	const {showModal} = useTaskStore(
         state => ({ 
             showModal: state.showCategoryModal
         }), 
 		shallow
 	);
+
+	const { onSubmit } = props;
 	const [category, setCategory] = useState<CategoryData>(defaultData);
 	const insets = useSafeAreaInsets();
+	
 	const setDefaultData = () => setCategory(defaultData);
 	
 	return (
@@ -66,8 +68,7 @@ export function CategoryForm(props: CategoryFormProps) {
 				setDefaultData();
 			}}
 			style={{ margin: 0 }}
-		>
-			
+		>			
 			<View
 				style={{ paddingTop: insets.top,}}
 				className="bg-[#031956] h-full px-5 py-5 items-center"
@@ -81,14 +82,12 @@ export function CategoryForm(props: CategoryFormProps) {
 					<Text className="text-3xl text-center font-semibold text-pink-500">
 						Nueva Categoria
 					</Text>
-
 					<TextInput
 						placeholder="Titulo de la categoria"
 						className="bg-indigo-200 p-2 px-5 my-3 text-lg w-full rounded-3xl"
 						value={category.title}
 						onChangeText={(e) => setCategory({ ...category, title: e })}
-					/>
-					
+					/>					
 					<View style={styles.container}>
 						<Text className="text-white">
 							Selecciona un color para la categoria!
@@ -103,7 +102,6 @@ export function CategoryForm(props: CategoryFormProps) {
 							style={styles.colorpiker}
 						/>
 					</View>
-
 					<TouchableOpacity
 						onPress={() => {
 							if (!category.title) return;
@@ -115,8 +113,7 @@ export function CategoryForm(props: CategoryFormProps) {
 						<Text className="text-white text-lg">Agregar Categoria</Text>
 					</TouchableOpacity>
 				</View>
-			</View>
-			
+			</View>			
 		</Modal>
 	);
 }

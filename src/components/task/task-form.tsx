@@ -8,15 +8,8 @@ import { useTaskStore } from '../../stores/task-store';
 import shallow from 'zustand/shallow';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SelectList from 'react-native-dropdown-select-list'
-/* const defaultData: TaskData = {
-    id: '',
-    title: '',
-    description: '',
-    completed: false,
-} */
 
 interface TaskFormPrps{
-    //task: TaskData
     onSubmit: (task: TaskData) => void
 }
 
@@ -30,6 +23,7 @@ export function TaskForm(props: TaskFormPrps) {
         }), 
 		shallow
 	);
+    
     const { onSubmit} = props;
     const [selected, setSelected] = useState("");
     const [editedTask, setEditedTask] = useState(selectedTask);
@@ -94,9 +88,8 @@ export function TaskForm(props: TaskFormPrps) {
                 onCancel();
             }}
             style={{ margin: 0 }}
-        >
-            {
-                <View
+        >            
+            <View
 				style={{ paddingTop: insets.top, flex: 1 }}
 				className="bg-[#031956]  h-full px-5 py-5 items-center"
 			>
@@ -109,14 +102,12 @@ export function TaskForm(props: TaskFormPrps) {
 					<Text className="text-3xl text-center font-semibold text-pink-500">
 						Modificar Tarea
 					</Text>
-
 					<TextInput
 						placeholder="Titulo de la tarea"
 						className="bg-indigo-200 p-2 px-5 my-3 border text-lg w-full rounded-3xl"
 						value={editedTask.title}
 						onChangeText={(e) => setEditedTask({ ...editedTask, title: e })}
 					/>
-
 					<TextInput
                         multiline={true}
                         numberOfLines={4}
@@ -125,21 +116,17 @@ export function TaskForm(props: TaskFormPrps) {
 						value={editedTask.description}
 						onChangeText={(e) => setEditedTask({ ...editedTask, description: e })}
                     />
-
                     <Text className="text-lg text-start mx-2 font-semibold text-pink-500">
 						Categoria actual
 					</Text>
-
                     <TextInput
 						className="bg-indigo-200 p-2 px-5 mt-3 border text-lg w-full rounded-3xl"
 						value={!selectedTask.categoryId ? 'Sin categoria' : searchTitleById(selectedTask.categoryId)}
 						editable={false} selectTextOnFocus={false}
 					/>
-
                     <Text className="text-lg text-start mx-2 font-semibold text-pink-500">
 						Nueva categoria
 					</Text>
-
                     <SelectList 
                         value={selected}
                         placeholder='Selecciona una categoria'
@@ -150,13 +137,12 @@ export function TaskForm(props: TaskFormPrps) {
                         searchicon={<MaterialCommunityIcons name="magnify" size={20} color={'black'} />} 
                         search={true} 
                         inputStyles={styles.text}
-                        boxStyles={styles.box} //override default styles 
+                        boxStyles={styles.box}
                         dropdownItemStyles={styles.dropdownItem}   
                         dropdownStyles={styles.dropdownBox}  
                         dropdownTextStyles={styles.dropdownText} 
                         maxHeight={150}
                     />
-
 					<TouchableOpacity
 						onPress={() => {
 							if (!editedTask.title) return;
@@ -168,8 +154,7 @@ export function TaskForm(props: TaskFormPrps) {
 						<Text className="text-white text-lg">Actualizar Tarea</Text>
 					</TouchableOpacity>
 				</Animated.View>
-			</View>
-            }
+			</View>       
         </Modal>
     );
 };

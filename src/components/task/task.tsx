@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { View, Text, ViewStyle, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
 	withTiming,
 } from 'react-native-reanimated';
-import { TaskForm } from './task-form';
 import { useTaskStore } from '../../stores/task-store';
 import shallow from 'zustand/shallow';
 
@@ -28,7 +27,6 @@ export interface TaskProps {
 }
 
 export function Task(props: TaskProps) {
-	//const [showModal, setShowModal] = useState(false);
 	const [color, setColor] = useState();
 	const {searchColorById} = useTaskStore(
         state => ({ 
@@ -69,14 +67,6 @@ export function Task(props: TaskProps) {
 		}),
 		[task.completed]
 	);
-
-	/* const displayForm = () => {
-        setShowModal(true);
-    }
-    
-    const hideForm = () => {
-        setShowModal(false);
-    } */
 	
 	useEffect(() => {
 		setColor(searchColorById(task.categoryId))
@@ -84,7 +74,6 @@ export function Task(props: TaskProps) {
 
 	return (
 		<Animated.View className='flex-row' style={containerStyle}>
-			{/* <TaskForm task={task} onSubmit={onChange}/> */}
 			<View
 				className={`bg-[#031956] p-4 px-5 rounded-l-xl flex-1 flex-row items-center ${classname}`}
 				onTouchEnd={() => {
