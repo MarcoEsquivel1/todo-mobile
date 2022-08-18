@@ -13,10 +13,12 @@ import Animated, {
 import { TaskForm } from "./task-form";
 
 export function Tasklist() {
-	const {hasCategory, tasks} = useTaskStore(
+	const {hasCategory, tasks, countTasks, categories} = useTaskStore(
         state => ({ 
             hasCategory: state.hasCategory,
-			tasks: state.tasks
+			tasks: state.tasks,
+			countTasks: state.countTasks,
+			categories: state.categories
         }), 
 		shallow
 	);
@@ -36,8 +38,25 @@ export function Tasklist() {
 		alert('Crea primero una categoria!')
 	}
 
-	const upDate = (task: TaskData) => {
+	const upDate = (task: TaskData, oldCat?: string) => {
 		useTaskStore.setState({tasks: tasks.map((t) => (t.id === task.id ? task : t))})
+		let n = countTasks(task.categoryId)
+		useTaskStore.setState({categories: categories.map((c) => {
+			if(c.id === task.categoryId) 
+			{
+				c.nTasks = n
+			}
+			return c})})
+		
+		if(oldCat){
+			let n2 = countTasks(oldCat)
+			useTaskStore.setState({categories: categories.map((c2) => {
+				if(c2.id === oldCat) 
+				{
+					c2.nTasks = n2
+				}
+				return c2})})
+		}
 	}
 
 	return (

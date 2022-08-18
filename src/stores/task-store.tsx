@@ -11,7 +11,8 @@ interface Context{
     showCategoryModal: boolean,
     categories: CategoryData[],
     searchTitleById: Function,
-    searchColorById: Function
+    searchColorById: Function,
+    countTasks: Function
 }
 
 const tasksMock: TaskData[] = [];
@@ -45,5 +46,16 @@ export const useTaskStore = create<Context>((set, get) => ({
         const list = get().categories
         let obj = list.find(c => c.id === id)
         return obj?.color
+    },
+    countTasks: (id: String) => {
+        const list = get().tasks
+        let count = list.filter(obj => {
+            if (obj.categoryId === id){
+                return true
+            }
+
+            return false
+        }).length;
+        return count
     }
 }));

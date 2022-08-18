@@ -10,7 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SelectList from 'react-native-dropdown-select-list'
 
 interface TaskFormPrps{
-    onSubmit: (task: TaskData) => void
+    onSubmit: (task: TaskData, oldCat?: string) => void
 }
 
 export function TaskForm(props: TaskFormPrps) {
@@ -28,6 +28,7 @@ export function TaskForm(props: TaskFormPrps) {
     const [selected, setSelected] = useState("");
     const [editedTask, setEditedTask] = useState(selectedTask);
     const insets = useSafeAreaInsets();
+    const oldCat = selectedTask.categoryId
     
     const resetTask = () => {
         setEditedTask(selectedTask);
@@ -146,7 +147,7 @@ export function TaskForm(props: TaskFormPrps) {
 					<TouchableOpacity
 						onPress={() => {
 							if (!editedTask.title) return;
-							onSubmit(editedTask);
+							onSubmit(editedTask, oldCat);
                             onCancel();
 						}}
 						className={`bg-pink-500 p-2 self-stretch rounded-xl items-center justify-items-center `}
